@@ -1,0 +1,200 @@
+<template>
+  <view class="order-card">
+    <view class="order-header">
+      <view class="order-header-left" style="display: flex; align-items: center;">
+        <image class="shop-icon" src="/static/imgs/shop.svg" />
+        <view class="shop-name">{{ order.shopName }}</view>
+      </view>
+      <uni-tag :type="tagInfo.type" :text="tagInfo.label" style="font-weight: 500;"/>
+    </view>
+    <view class="order-info">
+      <view class="order-row">
+        <text>订单编号：</text>
+        <text class="order-value">{{ order.orderId }}</text>
+        <image class="copy-icon" src="/static/imgs/copy.svg" @click="copyOrderId" />
+      </view>
+      <view class="order-row">
+        <text>手机号码：</text>
+        <text class="order-value">{{ order.mobile }}</text>
+      </view>
+      <view class="order-row">
+        <text>订单类型：</text>
+        <text class="order-value">{{ order.typeLabel }}</text>
+      </view>
+    </view>
+    <view class="order-footer">
+      <view class="order-time">下单时间：{{ order.createdAt ?? '' }}</view>
+      <view class="order-actions">
+        <button class="cancel-btn" @click="handleCancelOrder" v-if="order.status === ORDER_STATUS.CHECK_PENDING">
+          <view class="countdown">
+            <view>取消订单</view>
+          </view>
+        </button>
+        <button class="cancel-btn" @click="handleCheckOrder">
+          <view class="countdown">
+            <view>去检测</view>
+          </view>
+        </button>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script setup>
+import { defineModel, computed } from 'vue'
+import { ORDER_STATUS, ORDER_STATUS_LABELS } from '@/api/staff'
+
+const order = defineModel('order', {
+  type: Object,
+  default: () => ({})
+})
+
+const copyOrderId = () => {
+  uni.setClipboardData({
+    data: order.value.orderId,
+    success: () => {
+      uni.showToast({
+        title: '复制成功',
+        icon: 'success'
+      })
+    }
+  })
+}
+
+const handleCancelOrder = async () => {
+  uni.navigateTo({
+    url: `/pages/orders/cancel?id=${order.value.id}&orderTypeLabel=${order.value.typeLabel}&orderId=${order.value.orderId}`
+  })
+}
+
+const handleCheckOrder = () => {
+  uni.navigateTo({
+    url: `/pages/orders/check/index?id=${order.value.id}`
+  })
+}
+
+uni.$on('cancelOrderSuccess', (e) => {
+  if (+e.id == +order.value.id) {
+    order.value.status = ORDER_STATUS.CANCELLED
+  }
+})
+
+const tagInfo = computed(() => {
+  const label = ORDER_STATUS_LABELS[order.value.status]
+  const type = label === '待检测' ? 'primary' : 'warning'
+  return {
+    label,
+    type
+  }
+})
+</script>
+
+<style scoped>
+.order-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
+  padding: 18px 18px 12px 18px;
+  margin: 16px 12px;
+  font-size: 15px;
+}
+
+.order-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.shop-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+}
+
+.shop-name {
+  font-weight: bold;
+  color: #222;
+  margin-right: 8px;
+}
+
+.wechat-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+}
+
+.order-status {
+  color: #3578e5;
+  margin-left: auto;
+  font-size: 12px;
+}
+
+.order-info {
+  margin-bottom: 10px;
+}
+
+.order-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.order-value {
+  color: #666;
+  margin-left: 2px;
+  margin-right: 4px;
+}
+
+.copy-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.order-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.order-time {
+  color: #bbb;
+  font-size: 12px;
+}
+
+.order-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.cancel-btn {
+  background: #fff;
+  color: #3578e5;
+  border: 1px solid #3578e5;
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  line-height: 1.5;
+}
+
+.countdown {
+  color: #3578e5;
+  font-size: 12px;
+  padding: 2px 0;
+}
+
+.check-btn {
+  background: #3578e5;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 0 9px;
+  margin-left: 4px;
+}
+</style>

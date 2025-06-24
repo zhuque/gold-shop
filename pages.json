@@ -1,0 +1,19 @@
+{
+	"pages": [
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"navigationStyle": "custom"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#4f8aff",
+		"backgroundColor": "#F8F8F8",
+		"navigationStyle": "default"
+	},
+	"uniIdRouter": {}
+}
