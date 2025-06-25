@@ -95,7 +95,7 @@
 
 			<view class="shop-list">
 				<view class="shop-list-item" v-for="shop in shops" :key="shop.id">
-					<image :src="shop.thumb" mode="aspectFill" class="shop-list-item-img" lazy-load  />
+					<image :src="shop.thumb" mode="aspectFill" class="shop-list-item-img" lazy-load />
 					<view class="shop-list-info">
 						<view class="shop-list-info-address">
 							{{ shop.address }}
@@ -136,7 +136,10 @@
 
 <script setup>
 import { ref } from 'vue';
+import { getPhone, getUserInfo } from '@/api/user';
+import { userStore } from '@/stores/user';
 
+const user = userStore();
 const price = ref(759);
 const shopInfo = ref({
 	shopName: '周大福',
@@ -161,39 +164,19 @@ const shops = ref([
 	},
 ])
 
-const handleSell = () => {
+const handleSell = async () => {
+	if (user.isAuth) {
+		const { data } = await getUserInfo()
+		console.log('data', data)
+		return
+	}
 
 	uni.login({
 		provider: 'weixin',
-		success: (res) => {
+		success: async (res) => {
 			console.log('success', res)
-		}
-	})
-	return
-	
-	uni.checkSession({
-		success: (e) => {
-			// uni.navigateTo({
-			// 	url: '/pages/sell/index',
-			// })
-			console.log('success', e)
-		},
-		fail: (e) => {
-			console.log('fail', e)
-			uni.login({
-				provider: 'weixin',
-				success: () => {
-					uni.navigateTo({
-						url: '/pages/sell/index',
-					})
-				},
-				fail: () => {
-					uni.showToast({
-						title: '请先登录',
-						icon: 'none',
-					})
-				}
-			})
+			const { data } = await user.login(res.code)
+			console.log('data', data)
 		}
 	})
 }

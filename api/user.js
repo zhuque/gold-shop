@@ -6,9 +6,17 @@ export async function info() {
 
 export async function getPhone(code) {
 	const res = await request({
-		url: `/server/user/getPhone`,
+		url: `server/user/getPhone`,
 		method: 'POST',
 		data: { code }
 	})
 	return res
+}
+
+
+export async function getUserInfo() {
+	return request({
+		url: `server/user/info`,
+		method: 'GET'
+	})
 }

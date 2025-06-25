@@ -16,8 +16,8 @@ export const userStore = defineStore('user', {
 		},
 	},
 	actions: {
-		async login(code) {
-			const { data, code, msg } = await login(code)
+		async login(_code) {
+			const { data, code, msg } = await login(_code)
 			if (code !== 0) {
 				uni.showToast({
 					title: msg,

@@ -11,11 +11,11 @@ export async function request({ url, method, data }) {
 	})
 }
 
-export const baseUrl = process.env.NODE_ENV === 'development' ? '' : '';
+export const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:8888/' : '';
 
 export async function login(code) {
 	const res = await request({
-		url: `/server/user/login`,
+		url: `server/user/login`,
 		method: 'POST',
 		data: { code }
 	})
