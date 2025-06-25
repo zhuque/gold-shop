@@ -1,4 +1,3 @@
-import { userStore } from '@/stores/user';
 
 export async function request({ url, method, data }) {
 	const res = await uni.request({ url, method, data, dataType: "json" })
@@ -14,11 +13,11 @@ export async function request({ url, method, data }) {
 
 export const baseUrl = process.env.NODE_ENV === 'development' ? '' : '';
 
-export async function login(account, password) {
+export async function login(code) {
 	const res = await request({
-		url: `/staff/login`,
+		url: `/server/user/login`,
 		method: 'POST',
-		data: { username: account, password }
+		data: { code }
 	})
 	return res
 }
@@ -29,7 +28,7 @@ uni.addInterceptor('request', {
 		if (!args.header) {
 			args.header = {}
 		}
-		args.header["Authorization"] = "Bearer " + uni.getStorageSync("token")
+		args.header["token"] = uni.getStorageSync("token")
 	},
 	success(args) {
 		const { data, statusCode } = args

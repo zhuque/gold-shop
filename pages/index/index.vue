@@ -15,7 +15,7 @@
 					<view style="font-size:100rpx; color:#9b010e; font-weight: bold;">{{ price }}</view>
 					<view style="font-size: 35rpx; color:#000000; margin-left: 10rpx;">元/克</view>
 				</view>
-				<view class="btn">我要卖金 ></view>
+				<view class="btn" @click="handleSell">我要卖金 ></view>
 			</view>
 		</view>
 		<view class="card" style="background: #fff;">
@@ -161,7 +161,42 @@ const shops = ref([
 	},
 ])
 
+const handleSell = () => {
 
+	uni.login({
+		provider: 'weixin',
+		success: (res) => {
+			console.log('success', res)
+		}
+	})
+	return
+	
+	uni.checkSession({
+		success: (e) => {
+			// uni.navigateTo({
+			// 	url: '/pages/sell/index',
+			// })
+			console.log('success', e)
+		},
+		fail: (e) => {
+			console.log('fail', e)
+			uni.login({
+				provider: 'weixin',
+				success: () => {
+					uni.navigateTo({
+						url: '/pages/sell/index',
+					})
+				},
+				fail: () => {
+					uni.showToast({
+						title: '请先登录',
+						icon: 'none',
+					})
+				}
+			})
+		}
+	})
+}
 </script>
 
 <style scoped>

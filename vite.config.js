@@ -6,7 +6,7 @@ export default defineConfig({
 	server: {
 		// port: 3001,
 		proxy: {
-			'^/staff|uploads': {
+			'^/server|uploads': {
 				target: 'http://127.0.0.1:8888',
 				changeOrigin: true,
 				// rewrite: (path) => path.replace(/^\/API/, ''),
