@@ -168,6 +168,11 @@ const handleSell = async () => {
 	if (user.isAuth) {
 		const { data } = await getUserInfo()
 		console.log('data', data)
+		if (!data.phone) {
+			uni.navigateTo({
+				url: '/pages/login/index',
+			})
+		}
 		return
 	}
 

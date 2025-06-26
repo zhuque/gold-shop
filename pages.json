@@ -6,6 +6,14 @@
 				"navigationBarTitleText": "首页",
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/login/index",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationBarBackgroundColor": "#f5f3f1",
+				"navigationBarTextStyle": "black"
+			}
 		}
 	],
 	"globalStyle": {
