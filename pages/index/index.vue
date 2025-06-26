@@ -136,7 +136,6 @@
 
 <script setup>
 import { ref } from 'vue';
-import { getPhone, getUserInfo } from '@/api/user';
 import { userStore } from '@/stores/user';
 
 const user = userStore();
@@ -166,24 +165,45 @@ const shops = ref([
 
 const handleSell = async () => {
 	if (user.isAuth) {
-		const { data } = await getUserInfo()
-		console.log('data', data)
-		if (!data.phone) {
-			uni.navigateTo({
-				url: '/pages/login/index',
-			})
+		if (!user.user) {
+			await user.updateUser()
+			if (!user.user.phone) {
+				uni.navigateTo({
+					url: '/pages/login/index',
+				})
+			} else {
+				uni.navigateTo({
+					url: '/pages/sell/index',
+				})
+			}
+		} else {
+			if (!user.user.phone) {
+				uni.navigateTo({
+					url: '/pages/login/index',
+				})
+			} else {
+				uni.navigateTo({
+					url: '/pages/sell/index',
+				})
+			}
 		}
-		return
+	} else {
+		uni.login({
+			provider: 'weixin',
+			success: async (res) => {
+				await user.login(res.code)
+				uni.navigateTo({
+					url: '/pages/login/index',
+				})
+			},
+			fail: () => {
+				uni.showToast({
+					title: '登录失败',
+					icon: 'none'
+				})
+			}
+		})
 	}
-
-	uni.login({
-		provider: 'weixin',
-		success: async (res) => {
-			console.log('success', res)
-			const { data } = await user.login(res.code)
-			console.log('data', data)
-		}
-	})
 }
 </script>
 

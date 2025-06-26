@@ -10,14 +10,22 @@
 <script setup>
 import { userStore } from '@/stores/user';
 import { getPhone } from '@/api/user';
+import { onLoad } from '@dcloudio/uni-app';
 
 const user = userStore();
+onLoad(() => {
+    const info = user.user
+    if (info && info.phone) {
+        uni.navigateTo({
+            url: '/pages/sell/index',
+        })
+    }
+})
 
 const getPhoneNumber = async (e) => {
     console.log('e', e)
     const { data, code } = await getPhone(e.detail.code)
     if (code === 0) {
-        // user.login(data.phone)
         uni.navigateTo({
             url: '/pages/index/index',
         })

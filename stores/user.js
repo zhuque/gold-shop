@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { login } from "@/api/request";
-import { info } from "@/api/user";
+import { getUserInfo } from "@/api/user";
 
 export const userStore = defineStore('user', {
 	state: () => {
@@ -50,7 +50,7 @@ export const userStore = defineStore('user', {
 			this.geo = g
 		},
 		async updateUser() {
-			const { data } = await info()
+			const { data } = await getUserInfo()
 			if (data) {
 				this.user = data
 			}
