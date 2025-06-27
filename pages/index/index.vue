@@ -137,6 +137,8 @@
 <script setup>
 import { ref } from 'vue';
 import { userStore } from '@/stores/user';
+import { getShopList } from '@/api/shop';
+import { onLoad, onPullDownRefresh } from '@dcloudio/uni-app';
 
 const user = userStore();
 const price = ref(759);
@@ -145,23 +147,7 @@ const shopInfo = ref({
 	distance: '1.2km',
 })
 
-const shops = ref([
-	{
-		name: '周大福',
-		address: '深圳市罗湖区东门街道卢新街道购物中心',
-		thumb: 'https://www.mpdaogou.com/caijiimg/2024/03/28/2024032821360238591.jpg',
-	},
-	{
-		name: '深圳 一方城店',
-		address: '深圳市罗湖区东门街道卢新街道购物中心',
-		thumb: 'https://qcloud.dpfile.com/pc/VKcfKwFmAPNRTLeD9HNKFMURkaTUTyo-Nah11utS7iD21L7rPkwJGCXtDZ8mcPBlY0q73sB2DyQcgmKUxZFQtw.jpg',
-	},
-	{
-		name: '深圳 一方城店',
-		address: '深圳市罗湖区东门街道卢新街道购物中心',
-		thumb: '',
-	},
-])
+const shops = ref([])
 
 const handleSell = async () => {
 	if (user.isAuth) {
@@ -205,6 +191,23 @@ const handleSell = async () => {
 		})
 	}
 }
+
+const loadData = async () => {
+	const { data } = await getShopList()
+	shops.value = data
+}
+
+onLoad(() => {
+	loadData()
+})
+
+onPullDownRefresh(() => {
+	try {
+		loadData()
+	} finally {
+		uni.stopPullDownRefresh()
+	}
+})
 </script>
 
 <style scoped>
@@ -265,7 +268,7 @@ const handleSell = async () => {
 	background-color: #9b010e;
 	position: relative;
 	left: 0;
-	top: 3rpx;
+	top: 4.5rpx;
 }
 
 .shop-item-header-distance {

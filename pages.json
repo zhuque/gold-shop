@@ -4,7 +4,8 @@
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -18,7 +19,9 @@
 		{
 			"path": "pages/sell/index",
 			"style": {
-				"navigationBarTitleText": "卖金"
+				"navigationBarTitleText": "卖金",
+				"navigationBarBackgroundColor": "#f5f3f1",
+				"navigationBarTextStyle": "black"
 			}
 		}
 	],
