@@ -70,13 +70,13 @@
             <view class="card-content">
                 <view class="price-info">
                     <view class="price-info-item">
-                        <view class="price-info-text">750<span class="price-info-text-unit">元/克</span></view>
+                        <view class="price-info-text">{{ price }}<span class="price-info-text-unit">元/克</span></view>
                         <view class="price-info-desc">实时金价</view>
                         <view class="price-info-tip">（足金9999）</view>
                     </view>
                     <view class="price-info-line"></view>
                     <view class="price-info-item">
-                        <view class="price-info-text">0<span class="price-info-text-unit">元</span></view>
+                        <view class="price-info-text">{{ prePrice }}<span class="price-info-text-unit">元</span></view>
                         <view class="price-info-desc">预计回收金额</view>
                         <view class="price-info-tip">扣除服务费后</view>
                     </view>
@@ -93,21 +93,21 @@
                         <view class="type-item-desc">{{ item.desc }}</view>
                     </view>
                     <view class="type-item-input-box">
-                        <input type="number" class="type-item-input" />
+                        <input type="digit" class="type-item-input" v-model="item.weight" />
                         <view class="type-item-unit">克</view>
                     </view>
                 </view>
             </view>
         </view>
 
-        <view class="btn-box">
+        <view class="btn-box" @click="submitOrder">
             <view class="btn">提交订单</view>
         </view>
     </view>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 const shopInfo = ref({
     name: "店名",
@@ -121,18 +121,38 @@ const shopInfo = ref({
     status: "营业中",
 })
 
+const price = ref(750)
 const types = ref([
     {
         name: "饰品",
         icon: "/static/imgs/jewel.png",
         desc: "黄金戒指、项链、手镯等",
+        pure: 0.9999,
+        weight: null,
     },
     {
         name: "金条",
         icon: "/static/imgs/bar.png",
         desc: "金条、金币、收藏品等",
+        pure: 0.9999,
+        weight: null,
     },
 ])
+
+const prePrice = computed(() => (types.value.reduce((acc, item) => acc + item.pure * item.weight * price.value, 0) * 0.95).toFixed(2))
+
+const submitOrder = () => {
+    if (types.value.some(item => item.weight === null || item.weight === "" || item.weight === 0)) {
+        uni.showToast({
+            title: "请输入克重",
+            icon: "none"
+        })
+        return
+    }
+    uni.navigateTo({
+        url: "/pages/sell/submit"
+    })
+}
 </script>
 
 <style scoped lang="scss">
@@ -348,15 +368,16 @@ const types = ref([
 }
 
 .type-item-input {
-    width: 100rpx;
+    width: 100rpx; 
     height: 50rpx;
-    border: 1rpx solid #696868;
+    border: 1rpx solid #848484;
     padding: 0 10rpx;
 }
 
 .type-item-unit {
     font-size: 20rpx;
     color: #333;
+    margin-left: 10rpx;
 }
 
 .btn-box {
@@ -369,5 +390,6 @@ const types = ref([
     color: #fff;
     font-size: 30rpx;
     font-weight: 550;
+    cursor: pointer;
 }
 </style>
