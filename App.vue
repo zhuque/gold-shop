@@ -1,20 +1,19 @@
 <script>
-	export default {
-		onLaunch: function() {
-			console.log('App Launch')
-		},
-		onShow: function() {
-			console.log('App Show')
-		},
-		onHide: function() {
-			console.log('App Hide')
-		}
+import { priceStore } from '@/stores/price';
+export default {
+	onLaunch: function () {
+		const price = priceStore()
+		price.startUpdateTask()
+	},
+	onShow: function () {
+	},
+	onHide: function () {
 	}
+}
 </script>
 
 <style>
-	/*每个页面公共css */
-	page {
-		background-color: #f5f5f5;
-	}
+page {
+	background-color: #f5f5f5;
+}
 </style>

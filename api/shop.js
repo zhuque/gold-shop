@@ -6,3 +6,10 @@ export const getShopList = () => {
         method: 'GET',
     })
 }
+
+export const getPrice = () => {
+    return request({
+        url: 'server/price',
+        method: 'GET',
+    })
+}

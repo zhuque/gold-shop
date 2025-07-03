@@ -135,13 +135,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { userStore } from '@/stores/user';
+import { priceStore } from '@/stores/price';
 import { getShopList } from '@/api/shop';
 import { onLoad, onPullDownRefresh } from '@dcloudio/uni-app';
 
 const user = userStore();
-const price = ref(759);
+const priceSt = priceStore()
+const price = computed(() => priceSt.price)
 const shopInfo = ref({
 	shopName: '周大福',
 	distance: '1.2km',

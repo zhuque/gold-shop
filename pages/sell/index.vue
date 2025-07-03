@@ -108,6 +108,10 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import { priceStore } from '@/stores/price';
+
+const priceSt = priceStore()
+const price = computed(() => priceSt.price)
 
 const shopInfo = ref({
     name: "店名",
@@ -121,7 +125,6 @@ const shopInfo = ref({
     status: "营业中",
 })
 
-const price = ref(750)
 const types = ref([
     {
         name: "饰品",
@@ -153,6 +156,7 @@ const submitOrder = () => {
         url: "/pages/sell/submit"
     })
 }
+
 </script>
 
 <style scoped lang="scss">
