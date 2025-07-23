@@ -12,7 +12,7 @@
 			</view>
 			<view style="display: flex; justify-content: space-between; align-items: baseline; width: 100%;">
 				<view style="display: flex; align-items: baseline;">
-					<view style="font-size:100rpx; color:#9b010e; font-weight: bold;">{{ price }}</view>
+					<view style="font-size:80rpx; color:#9b010e; font-weight: bold;">{{ price }}</view>
 					<view style="font-size: 35rpx; color:#000000; margin-left: 10rpx;">元/克</view>
 				</view>
 				<view class="btn" @click="handleSell">我要卖金 ></view>

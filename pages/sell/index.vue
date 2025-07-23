@@ -39,19 +39,19 @@
 
             <view class="card-content shop-card-content-bottom">
                 <!-- 添加客服 联系电话 门店导航 门店微信 -->
-                <view>
+                <view @click="addServe" class="contact-item">
                     <image src="/static/imgs/serve.png" mode="widthFix" class="shop-card-content-item-img" />
                     <view class="shop-card-content-item-text">添加客服</view>
                 </view>
-                <view>
+                <view class="contact-item">
                     <image src="/static/imgs/tel.png" mode="widthFix" class="shop-card-content-item-img" />
                     <view class="shop-card-content-item-text">联系电话</view>
                 </view>
-                <view>
+                <view class="contact-item">
                     <image src="/static/imgs/nav.png" mode="widthFix" class="shop-card-content-item-img" />
                     <view class="shop-card-content-item-text">门店导航</view>
                 </view>
-                <view>
+                <view class="contact-item">
                     <image src="/static/imgs/wechat.png" mode="widthFix" class="shop-card-content-item-img" />
                     <view class="shop-card-content-item-text">门店微信</view>
                 </view>
@@ -63,7 +63,7 @@
                 <view class="card-header-left">
                     <span class="card-header-left-1">回收货品</span>
                 </view>
-                <view class="card-header-right">
+                <view class="card-header-right" @click="goDesc">
                     回收说明 >
                 </view>
             </view>
@@ -84,7 +84,7 @@
             </view>
 
             <view class="card-content" style="margin-top: 20rpx;">
-                <view v-for="item in types" :key="item.name" class="type-item">
+                <view v-for="item in orders" :key="item.name" class="type-item">
                     <view class="type-item-img-box">
                         <image :src="item.icon" mode="widthFix" class="type-item-img" />
                     </view>
@@ -93,7 +93,7 @@
                         <view class="type-item-desc">{{ item.desc }}</view>
                     </view>
                     <view class="type-item-input-box">
-                        <input type="digit" class="type-item-input" v-model="item.weight" />
+                        <input type="digit" class="type-item-input" v-model.number="item.weight" />
                         <view class="type-item-unit">克</view>
                     </view>
                 </view>
@@ -109,6 +109,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { priceStore } from '@/stores/price';
+import { addSellOrder, getSellOrderList } from '@/api/user';
 
 const priceSt = priceStore()
 const price = computed(() => priceSt.price)
@@ -125,13 +126,14 @@ const shopInfo = ref({
     status: "营业中",
 })
 
-const types = ref([
+const orders = ref([
     {
         name: "饰品",
         icon: "/static/imgs/jewel.png",
         desc: "黄金戒指、项链、手镯等",
         pure: 0.9999,
         weight: null,
+        type: 0,
     },
     {
         name: "金条",
@@ -139,21 +141,52 @@ const types = ref([
         desc: "金条、金币、收藏品等",
         pure: 0.9999,
         weight: null,
+        type: 1,
     },
 ])
 
-const prePrice = computed(() => (types.value.reduce((acc, item) => acc + item.pure * item.weight * price.value, 0) * 0.95).toFixed(2))
+const prePrice = computed(() => (orders.value.reduce((acc, item) => acc + item.pure * item.weight * price.value, 0) * 0.95).toFixed(2))
 
-const submitOrder = () => {
-    if (types.value.some(item => item.weight === null || item.weight === "" || item.weight === 0)) {
+const submitOrder = async () => {
+    if (orders.value.every(item => item.weight === null || item.weight === "" || item.weight === 0)) {
         uni.showToast({
             title: "请输入克重",
             icon: "none"
         })
         return
     }
+    const res = await addSellOrder({
+        shopId: +shopInfo.value.id,
+        items: orders.value.map(item => ({
+            weight: item.weight,
+            type: item.type,
+        })),
+    })
+    // open webview
     uni.navigateTo({
-        url: "/pages/sell/submit"
+        url: `/pages/webview/index?url=${encodeURIComponent(res.data.url)}`
+    })
+}
+
+const goDesc = () => {
+    uni.navigateTo({
+        url: "/pages/desc/index"
+    })
+}
+
+const addServe = () => {
+    // TODO: 客服链接，corpId修改为配置
+    uni.openCustomerServiceChat({
+        extInfo: {
+           url: 'https://www.baidu.com' // 客服链接
+        },
+        corpId: 'wxd930ea5d5a258f4f', // 企业ID
+        success: () => {
+            console.log('success')
+        },
+        fail: (e) => {
+            console.log('fail', e)
+        }
     })
 }
 
@@ -271,8 +304,8 @@ const submitOrder = () => {
 .shop-card-content-item-img {
     width: 95rpx;
     height: 95rpx;
-    margin-right: 10rpx;
-    margin-bottom: 10rpx;
+    // margin-right: 10rpx;
+    // margin-bottom: 10rpx;
 }
 
 .shop-card-content-item-text {
@@ -395,5 +428,13 @@ const submitOrder = () => {
     font-size: 30rpx;
     font-weight: 550;
     cursor: pointer;
+}
+
+.contact-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15rpx;
 }
 </style>

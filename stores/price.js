@@ -18,7 +18,7 @@ export const priceStore = defineStore('price', {
             this.getPrice()
             this.interval = setInterval(() => {
                 this.getPrice()
-            }, 1000  * 10)
+            }, 1000  *30)
         },
         stopUpdateTask() {
             clearInterval(this.interval)

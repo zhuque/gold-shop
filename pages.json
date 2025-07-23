@@ -31,6 +31,22 @@
 				"navigationBarBackgroundColor": "#f5f3f1",
 				"navigationBarTextStyle": "black"
 			}
+		}, 
+		{
+			"path": "pages/desc/index",
+			"style": {
+				"navigationBarTitleText": "回收说明",
+				"navigationBarBackgroundColor": "#f5f3f1",
+				"navigationBarTextStyle": "black"
+			}
+		}, 
+		{
+			"path": "pages/webview/index",
+			"style": {
+				"navigationBarTitleText": "web",
+				"navigationBarBackgroundColor": "#f5f3f1",
+				"navigationBarTextStyle": "black"
+			}
 		}
 	],
 	"globalStyle": {

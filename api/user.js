@@ -20,3 +20,27 @@ export async function getUserInfo() {
 		method: 'GET'
 	})
 }
+
+export async function addSellOrder(data) {
+	return request({
+		url: `server/recycles`,
+		method: 'POST',
+		data
+	})
+}
+
+export async function getSellOrder() {
+	return request({
+		url: `server/recycles/${id}`,
+		method: 'GET'
+	})
+}
+
+export async function getSellOrderList() {
+	return request({
+		url: `server/recycles`,
+		method: 'GET'
+	})
+}
+
+
