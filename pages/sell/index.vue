@@ -164,25 +164,12 @@ const submitOrder = async () => {
             })),
         })
 
-        if (data.fddWxOriginId) {
-            // 跳转fdd小程序
-            uni.navigateToMiniProgram({
-                appId: data.fddWxOriginId,
-                path: data.fddWxPath,
-                success: () => {
-                    console.log('success')
-                },
-                fail: () => {
-                    console.log('fail')
-                }
-            })  
-        } else {
-            // open webview
-            if (data.url) {
-                uni.navigateTo({
-                    url: `/pages/webview/index?url=${encodeURIComponent(data.url)}`
-                })
-            }
+        // open webview
+        if (data.url) {
+            console.log('data.url', data.url)
+            uni.navigateTo({
+                url: "/pagesFace/pages/webview/webview?url=" + encodeURIComponent(data.url)
+            })
         }
     }
     catch (e) {

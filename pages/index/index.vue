@@ -148,6 +148,10 @@ const shopInfo = ref({
 	shopName: '周大福',
 	distance: '1.2km',
 })
+const userLocation = ref({
+	latitude: 0,
+	longitude: 0,
+})
 
 const shops = ref([])
 
@@ -196,7 +200,10 @@ const handleSell = async () => {
 
 const loadData = async () => {
 	const { data } = await getShopList()
-	shops.value = data
+	shops.value = data.map(item => {
+		item.distance = calcDistance(userLocation.value.latitude, userLocation.value.longitude, item.latitude, item.longitude)
+		return item
+	})
 }
 
 onLoad(() => {
@@ -210,6 +217,28 @@ onPullDownRefresh(() => {
 		uni.stopPullDownRefresh()
 	}
 })
+
+// 获取当前位置
+const getLocation = async () => {
+	const res = await uni.getLocation({
+		type: 'wgs84',
+	})
+	userLocation.value = res
+}
+
+getLocation()
+
+function calcDistance(lat1, lon1, lat2, lon2) {
+	const R = 6371; // 地球半径，单位为公里
+	const dLat = (lat2 - lat1) * Math.PI / 180;
+	const dLon = (lon2 - lon1) * Math.PI / 180;
+	const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+		Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+		Math.sin(dLon / 2) * Math.sin(dLon / 2);
+	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	const distance = R * c; // 距离，单位为公里
+	return distance;
+}
 </script>
 
 <style scoped>

@@ -1,0 +1,13 @@
+{
+    "subpackages": [
+      {
+        "root": "pagesFace",
+        "name": "pagesFace",
+        "pages": [
+          "pages/index/index",
+          "pages/webview/webview",
+          "pages/middle/middle"
+        ]
+      }
+    ]
+  }
