@@ -1,7 +1,7 @@
 <template>
     <view class="login-page">
         <image src="/static/imgs/logo.png" mode="widthFix" style="width: 90%; margin-bottom: 100rpx;" />
-        <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" class="login-btn" >
+        <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" class="login-btn">
             授权手机号一键登录
         </button>
     </view>
@@ -22,14 +22,34 @@ onLoad(() => {
     }
 })
 
-const getPhoneNumber = async (e) => {
-    console.log('e', e)
+
+const doGetPhoneNumber = async (e) => {
     const { data, code } = await getPhone(e.detail.code)
     if (code === 0) {
         uni.navigateTo({
             url: '/pages/index/index',
         })
     }
+}
+const getPhoneNumber = async (e) => {
+    if (!user.user) {
+        uni.login({
+            provider: 'weixin',
+            success: async (res) => {
+                await user.login(res.code)
+                doGetPhoneNumber(e)
+            },
+            fail: () => {
+                uni.showToast({
+                    title: '登录失败',
+                    icon: 'none'
+                })
+            }
+        })
+    } else {
+        doGetPhoneNumber(e)
+    }
+
 }
 </script>
 

@@ -11,7 +11,7 @@ export async function request({ url, method, data }) {
 	})
 }
 
-export const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:8888/' : '';
+export const baseUrl = process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8888/' : '';
 
 export async function login(code) {
 	const res = await request({
@@ -34,7 +34,7 @@ uni.addInterceptor('request', {
 		const { data, statusCode } = args
 		if (statusCode == 401) {
 			uni.navigateTo({
-				url: '/pages/login/login'
+				url: '/pages/login/index'
 			})
 		}
 	},

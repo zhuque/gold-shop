@@ -93,7 +93,7 @@
                         <view class="type-item-desc">{{ item.desc }}</view>
                     </view>
                     <view class="type-item-input-box">
-                        <input type="digit" class="type-item-input" v-model.number="item.weight" />
+                        <input type="digit" class="type-item-input" v-model="item.weight" />
                         <view class="type-item-unit">克</view>
                     </view>
                 </view>
@@ -109,7 +109,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { priceStore } from '@/stores/price';
-import { addSellOrder, getSellOrderList } from '@/api/user';
+import { addSellOrder } from '@/api/user';
 
 const priceSt = priceStore()
 const price = computed(() => priceSt.price)
@@ -132,16 +132,16 @@ const orders = ref([
         icon: "/static/imgs/jewel.png",
         desc: "黄金戒指、项链、手镯等",
         pure: 0.9999,
-        weight: null,
-        type: 0,
+        weight: 0,
+        type: "jewelry",
     },
     {
         name: "金条",
         icon: "/static/imgs/bar.png",
         desc: "金条、金币、收藏品等",
         pure: 0.9999,
-        weight: null,
-        type: 1,
+        weight: 0,
+        type: "bar",
     },
 ])
 
@@ -155,17 +155,41 @@ const submitOrder = async () => {
         })
         return
     }
-    const res = await addSellOrder({
-        shopId: +shopInfo.value.id,
-        items: orders.value.map(item => ({
-            weight: item.weight,
-            type: item.type,
-        })),
-    })
-    // open webview
-    uni.navigateTo({
-        url: `/pages/webview/index?url=${encodeURIComponent(res.data.url)}`
-    })
+    try {
+        const { data } = await addSellOrder({
+            shopId: +shopInfo.value.id,
+            items: orders.value.filter(item => item.weight > 0).map(item => ({
+                weight: +item.weight,
+                type: item.type,
+            })),
+        })
+
+        if (data.fddWxOriginId) {
+            // 跳转fdd小程序
+            uni.navigateToMiniProgram({
+                appId: data.fddWxOriginId,
+                path: data.fddWxPath,
+                success: () => {
+                    console.log('success')
+                },
+                fail: () => {
+                    console.log('fail')
+                }
+            })  
+        } else {
+            // open webview
+            if (data.url) {
+                uni.navigateTo({
+                    url: `/pages/webview/index?url=${encodeURIComponent(data.url)}`
+                })
+            }
+        }
+    }
+    catch (e) {
+        console.error('e', e)
+    }
+
+
 }
 
 const goDesc = () => {
@@ -178,7 +202,7 @@ const addServe = () => {
     // TODO: 客服链接，corpId修改为配置
     uni.openCustomerServiceChat({
         extInfo: {
-           url: 'https://www.baidu.com' // 客服链接
+            url: 'https://www.baidu.com' // 客服链接
         },
         corpId: 'wxd930ea5d5a258f4f', // 企业ID
         success: () => {
@@ -405,7 +429,7 @@ const addServe = () => {
 }
 
 .type-item-input {
-    width: 100rpx; 
+    width: 100rpx;
     height: 50rpx;
     border: 1rpx solid #848484;
     padding: 0 10rpx;
