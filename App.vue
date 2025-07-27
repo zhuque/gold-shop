@@ -1,9 +1,6 @@
 <script>
-import { priceStore } from '@/stores/price';
 export default {
 	onLaunch: function () {
-		const price = priceStore()
-		price.startUpdateTask()
 	},
 	onShow: function () {
 	},

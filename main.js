@@ -14,20 +14,24 @@ app.$mount()
 // #ifdef VUE3
 import { createSSRApp } from 'vue'
 import * as Pinia from "pinia";
+import { priceStore } from '@/stores/price';
+
+
 export function createApp() {
   const app = createSSRApp(App)
   const pinia = Pinia.createPinia()
   app.use(pinia);
-  
+
   pinia.use(({ store }) => {
     store.$subscribe(() => {
       uni.setStorageSync(store.$id, JSON.stringify(store.$state))
     })
   })
-  
+  const price = priceStore()
+  price.startUpdateTask()
   return {
     app,
-	Pinia
+    Pinia
   }
 }
 

@@ -11,7 +11,7 @@ export async function request({ url, method, data }) {
 	})
 }
 
-export const baseUrl = process.env.NODE_ENV === 'development' ? 'http://192.168.31.114:8888/' : '';
+export const baseUrl = process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8888/' : '';
 
 export async function login(code) {
 	const res = await request({
