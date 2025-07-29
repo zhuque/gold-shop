@@ -162,7 +162,8 @@ function handleDetail(record) {
 
         .records-header-status {
             font-size: 20rpx;
-            color: #e7b733;
+            color: #e7c158;
+            font-weight: 600;
         }
     }
 
@@ -205,7 +206,7 @@ function handleDetail(record) {
 
         .records-footer-button {
             width: 100rpx;
-            background-color: #e7b733;
+            background-color: #b39749;
             color: #fff;
             border-radius: 10rpx;
             text-align: center;

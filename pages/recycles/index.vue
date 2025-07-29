@@ -19,10 +19,10 @@ const items = computed(() => statusAll.map(item => item.text))
 
 const statusAll = [
     { text: "全部", value: "all" },
-    { text: "待回收", value: "waiting" },
-    { text: "待确认", value: "confirm" },
-    { text: "已完成", value: "complete" },
-    { text: "已取消", value: "cancel" }
+    { text: "待回收", value: "draft" },
+    { text: "待确认", value: "customer_pending_confirm" },
+    { text: "已完成", value: "completed" },
+    { text: "已取消", value: "cancelled" }
 ]
 const current = ref(0);
 
