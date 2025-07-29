@@ -1,0 +1,13 @@
+{
+    "name": "recycle-app",
+    "version": "1.0.0",
+    "description": "recycle-app",
+    "main": "main.js",
+    "scripts": {
+        "dev": "uni-app-plus dev",
+        "build": "uni-app-plus build"
+    },
+    "dependencies": {
+        "dayjs": "^1.11.13"
+    }
+}

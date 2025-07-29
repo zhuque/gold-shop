@@ -14,6 +14,7 @@
 import { ref, computed } from 'vue';
 import records from './components/records.vue';
 
+
 const items = computed(() => statusAll.map(item => item.text))
 
 const statusAll = [
