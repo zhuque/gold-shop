@@ -29,7 +29,7 @@
                 <view class="item">
                     <view class="item-label">订单状态：</view>
                     <view class="item-value">
-                        <view class="status-label">{{ order.status }}</view>
+                        <view class="status-label">{{ order.statusLabel }}</view>
                     </view>
                 </view>
                 <view class="item">
@@ -65,10 +65,10 @@
         </view>
 
         <view class="footer">
-            <view class="footer-btn cancel-btn">
+            <view class="footer-btn cancel-btn" v-if="showCancel">
                 <view class="footer-btn-text" @click="onCancel">取消</view>
             </view>
-            <view class="footer-btn confirm-btn">
+            <view class="footer-btn confirm-btn" v-if="showConfirm">
                 <view class="footer-btn-text" @click="onConfirm">确认</view>
             </view>
         </view>
@@ -81,8 +81,8 @@
 
 <script setup>
 import { onLoad, onPullDownRefresh } from '@dcloudio/uni-app'
-import { getSellOrder } from '@/api/user'
-import { ref } from 'vue'
+import { getSellOrder, cancelSellOrder, confirmSellOrder } from '@/api/user'
+import { ref, computed } from 'vue'
 import dayjs from 'dayjs'
 import { useRecycleStore } from '@/stores/recycle'
 
@@ -91,7 +91,7 @@ const statusLabels = recycleStore.getStatusLabels();
 
 const order = ref({})
 const id = ref('')
-onLoad( (options) => {
+onLoad((options) => {
     id.value = options.id
     loadData()
 })
@@ -103,7 +103,7 @@ async function loadData() {
     const { data } = await getSellOrder(id.value)
     order.value = data
     order.value.createdAt = dayjs(order.value.createdAt).format('YYYY-MM-DD HH:mm:ss')
-    order.value.status = statusLabels[order.value.status]
+    order.value.statusLabel = statusLabels[order.value.status]
 }
 
 function copyOrderNo() {
@@ -119,7 +119,26 @@ function copyOrderNo() {
 }
 
 async function onCancel() {
-    // TODO: 取消
+    try {
+        const { code } = await cancelSellOrder(id.value)
+        if (code !== 0) {
+            uni.showToast({
+                title: msg,
+                icon: 'error'
+            })
+            return
+        }
+        uni.showToast({
+            title: '取消成功',
+            icon: 'success'
+        })
+        loadData()
+    } catch (error) {
+        uni.showToast({
+            title: '取消失败',
+            icon: 'error'
+        })
+    }
 }
 
 async function onConfirm() {
@@ -142,6 +161,9 @@ onPullDownRefresh(async () => {
         uni.stopPullDownRefresh()
     }
 })
+
+const showCancel = computed(() => order.value.status === 'draft')
+const showConfirm = computed(() => ['draft', 'pending'].includes(order.value.status))
 </script>
 
 <style lang="scss" scoped>

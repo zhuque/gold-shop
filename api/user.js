@@ -49,3 +49,17 @@ export async function getUserOrders(status, page, pageSize) {
 		method: 'GET'
 	})
 }
+
+export async function cancelSellOrder(id) {
+	return request({
+		url: `server/recycles/${id}/cancel`,
+		method: 'PUT'
+	})
+}
+
+export async function confirmSellOrder(id) {
+	return request({
+		url: `server/recycles/${id}/confirm`,
+		method: 'PUT'
+	})
+}
