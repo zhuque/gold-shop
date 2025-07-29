@@ -23,7 +23,7 @@
 				"navigationBarBackgroundColor": "#f5f3f1",
 				"navigationBarTextStyle": "black"
 			}
-		}, 
+		},
 		{
 			"path": "pages/agreement/index",
 			"style": {
@@ -31,7 +31,7 @@
 				"navigationBarBackgroundColor": "#f5f3f1",
 				"navigationBarTextStyle": "black"
 			}
-		}, 
+		},
 		{
 			"path": "pages/desc/index",
 			"style": {
@@ -39,7 +39,7 @@
 				"navigationBarBackgroundColor": "#f5f3f1",
 				"navigationBarTextStyle": "black"
 			}
-		}, 
+		},
 		{
 			"path": "pages/webview/index",
 			"style": {
@@ -47,7 +47,7 @@
 				"navigationBarBackgroundColor": "#f5f3f1",
 				"navigationBarTextStyle": "black"
 			}
-		}, 
+		},
 		{
 			"path": "pages/mine/index",
 			"style": {
@@ -69,7 +69,8 @@
 			"style": {
 				"navigationBarTitleText": "订单详情",
 				"navigationBarBackgroundColor": "#f5f3f1",
-				"navigationBarTextStyle": "black"
+				"navigationBarTextStyle": "black",
+				"enablePullDownRefresh": true
 			}
 		}
 	],
@@ -89,8 +90,8 @@
 				"pagePath": "pages/index/index",
 				"text": "首页",
 				"iconPath": "/static/imgs/tabs/home.png",
-				"selectedIconPath": "/static/imgs/tabs/home-active.png",
-			}, 
+				"selectedIconPath": "/static/imgs/tabs/home-active.png"
+			},
 			{
 				"pagePath": "pages/mine/index",
 				"text": "我的",

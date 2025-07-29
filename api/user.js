@@ -29,7 +29,7 @@ export async function addSellOrder(data) {
 	})
 }
 
-export async function getSellOrder() {
+export async function getSellOrder(id) {
 	return request({
 		url: `server/recycles/${id}`,
 		method: 'GET'

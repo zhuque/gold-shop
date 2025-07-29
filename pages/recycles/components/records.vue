@@ -41,6 +41,10 @@ import { getUserOrders } from '@/api/user';
 import { ref } from 'vue';
 import { onShow } from '@dcloudio/uni-app';
 import dayjs from 'dayjs';
+import { useRecycleStore } from '@/stores/recycle'
+
+const recycleStore = useRecycleStore();
+const statusLabels = recycleStore.getStatusLabels();
 
 const loading = ref(false);
 const page = ref(1);
@@ -106,15 +110,6 @@ async function onRefresh() {
     triggered.value = false;
 }
 
-
-const statusLabels = {
-    'all': '全部',
-    'draft': '待回收',
-    'pending': '待支付',
-    'paid': '已支付',
-    'completed': '已完成',
-    'cancelled': '已取消'
-}
 
 
 function onRestore() {
