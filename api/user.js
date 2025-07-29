@@ -43,9 +43,9 @@ export async function getSellOrderList() {
 	})
 }
 
-export async function getUserOrders() {
+export async function getUserOrders(status, page, pageSize) {
 	return request({
-		url: `server/recycles`,
+		url: `server/recycles?status=${status}&page=${page}&pageSize=${pageSize}`,
 		method: 'GET'
 	})
 }
