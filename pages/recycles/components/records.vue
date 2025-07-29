@@ -142,7 +142,8 @@ function handleDetail(record) {
     padding: 20rpx 30rpx;
     background-color: #fff;
     margin-bottom: 20rpx;
-
+    border-radius: 10rpx;
+    
     .records-header {
         display: flex;
         justify-content: space-between;

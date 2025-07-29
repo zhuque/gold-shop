@@ -46,26 +46,26 @@ const recycleItems = ref([
     {
         title: '待回收',
         icon: '/static/imgs/mine/waiting.svg',
-        link: '/pages/recycles/index?status=0',
-        status: "waiting"
+        link: '/pages/recycles/index?status=draft',
+        status: "draft"
     },
     {
         title: '待确认',
         icon: '/static/imgs/mine/confirm.svg',
-        link: '/pages/recycles/index?status=1',
-        status: "confirm"
+        link: '/pages/recycles/index?status=customer_pending_confirm',
+        status: "customer_pending_confirm"
     },
     {
         title: '已完成',
         icon: '/static/imgs/mine/complete.svg',
-        link: '/pages/recycles/index?status=2',
-        status: "complete"
+        link: '/pages/recycles/index?status=completed',
+        status: "completed"
     },
     {
         title: '已取消',
         icon: '/static/imgs/mine/cancel.svg',
-        link: '/pages/recycles/index?status=3',
-        status: "cancel"
+        link: '/pages/recycles/index?status=cancelled',
+        status: "cancelled"
     }
 ])
 

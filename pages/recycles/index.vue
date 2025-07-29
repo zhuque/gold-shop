@@ -13,6 +13,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import records from './components/records.vue';
+import { onLoad } from '@dcloudio/uni-app';
 
 
 const items = computed(() => statusAll.map(item => item.text))
@@ -30,6 +31,12 @@ const current = ref(0);
 async function onClickItem(e) {
     current.value = e.currentIndex;
 }
+
+onLoad((options) => {
+    console.log('options', options)
+    current.value = statusAll.findIndex(item => item.value === options.status)
+    console.log('current', current.value)
+})
 
 </script>
 

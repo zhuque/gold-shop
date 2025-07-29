@@ -3,15 +3,15 @@
         <view class="shop">
             <view class="shop-header">门店信息</view>
             <view class="shop-content">
-                <view class="item">
+                <view class="item flex-left">
                     <view class="item-label">门店名称：</view>
                     <view class="item-value">{{ order.shop?.name }}</view>
                 </view>
-                <view class="item">
+                <view class="item flex-left">
                     <view class="item-label">门店地址：</view>
                     <view class="item-value">{{ order.shop?.address }}</view>
                 </view>
-                <view class="item">
+                <view class="item flex-left">
                     <view class="item-label">门店电话：</view>
                     <view class="item-value">{{ order.shop?.phone }}</view>
                 </view>
@@ -173,6 +173,10 @@ const showConfirm = computed(() => ['draft', 'pending'].includes(order.value.sta
     padding: 0 20rpx;
 }
 
+.flex-left {
+    justify-content: flex-start!important;
+}
+
 .shop,
 .order,
 .items {
@@ -238,13 +242,14 @@ const showConfirm = computed(() => ['draft', 'pending'].includes(order.value.sta
 }
 
 .copy-btn {
-    color: #8b711b;
+    background-color: #8b711b;
+    color: #fff;
     margin-left: 10rpx;
     cursor: pointer;
     display: inline-block;
-    border: 1rpx solid #8b711b;
-    padding: 2rpx 10rpx;
+    padding: 5rpx 15rpx;
     border-radius: 5rpx;
+    font-size: 20rpx;
 }
 
 .footer {
