@@ -11,15 +11,17 @@
                 <view class="records-content-item">
                     <view class="records-content-item-row">
                         <view class="records-content-item-row-label">类型：</view>
-                        <view class="records-content-item-row-value">{{ record.category }}</view>
+                        <view class="records-content-item-row-value">
+                            <uni-tag :text="record.category" size="mini" type="default" />
+                        </view>
                     </view>
                     <view class="records-content-item-row">
                         <view class="records-content-item-row-label">总重：</view>
-                        <view class="records-content-item-row-value">{{ record.weight }}</view>
+                        <view class="records-content-item-row-value">{{ record.weight }}&nbsp;克</view>
                     </view>
                     <view class="records-content-item-row">
                         <view class="records-content-item-row-label">预计金额：</view>
-                        <view class="records-content-item-row-value">{{ record.amount }}</view>
+                        <view class="records-content-item-row-value">{{ record.amount.toFixed(2) }}&nbsp;元</view>
                     </view>
                     <view class="records-content-item-row">
                         <view class="records-content-item-row-label">下单时间：</view>
@@ -177,18 +179,18 @@ function handleDetail(record) {
             justify-content: space-between;
             flex-direction: column;
             gap: 10rpx;
+            width: 100%;
 
             .records-content-item-row {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
+                width: 100%;
                 .records-content-item-row-label {
                     width: 150rpx;
-                    font-weight: 500;
                 }
                 .records-content-item-row-value {
-                    flex: 1;
-                    font-weight: 600;
+                    color: #333;
                 }
             }
         }
