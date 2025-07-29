@@ -28,18 +28,11 @@
 </template>
 
 <script setup>
-import { getUserOrders } from '@/api/user';
-import { onShow } from '@dcloudio/uni-app';
 import { ref, computed } from 'vue';
 import { userStore } from '@/stores/user';
 
 const user = userStore();
 const userInfo = computed(() => user.userInfo);
-
-const orders = ref({
-    list: [],
-    total: 0,
-})
 
 
 const recycleItems = ref([
@@ -69,12 +62,6 @@ const recycleItems = ref([
     }
 ])
 
-onShow(() => {
-    getUserOrders().then(res => {
-        orders.value.list = res.data.list;
-        orders.value.total = res.data.total;
-    })
-})
 
 const handleRecycle = (status) => {
     uni.navigateTo({

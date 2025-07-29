@@ -156,7 +156,7 @@ const submitOrder = async () => {
         return
     }
     try {
-        const { data } = await addSellOrder({
+        const { data, code } = await addSellOrder({
             shopId: +shopInfo.value.id,
             items: orders.value.filter(item => item.weight > 0).map(item => ({
                 weight: +item.weight,
@@ -164,19 +164,21 @@ const submitOrder = async () => {
             })),
         })
 
-        // open webview
-        if (data.url) {
-            console.log('data.url', data.url)
-            uni.navigateTo({
-                url: "/pagesFace/pages/webview/webview?url=" + encodeURIComponent(data.url)
+        if (code !== 0) {
+            uni.showToast({
+                title: msg,
+                icon: 'error'
             })
-        }
+            return
+        } 
+
+        uni.navigateTo({
+            url: "/pages/recycles/detail?id=" + data.id
+        })
     }
     catch (e) {
         console.error('e', e)
     }
-
-
 }
 
 const goDesc = () => {

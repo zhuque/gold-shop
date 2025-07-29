@@ -142,7 +142,26 @@ async function onCancel() {
 }
 
 async function onConfirm() {
-    // TODO: 确认
+    try {
+        const { code, data } = await confirmSellOrder(id.value)
+        if (code !== 0) {
+            uni.showToast({
+                title: msg,
+                icon: 'error'
+            })
+            return
+        }
+        if (data.url) {
+            uni.navigateTo({
+                url: "/pagesFace/pages/webview/webview?url=" + encodeURIComponent(data.url)
+            })
+        }
+    } catch (error) {
+        uni.showToast({
+            title: '确认失败',
+            icon: 'error'
+        })
+    }
 }
 
 function onContact() {
@@ -174,7 +193,7 @@ const showConfirm = computed(() => ['draft', 'pending'].includes(order.value.sta
 }
 
 .flex-left {
-    justify-content: flex-start!important;
+    justify-content: flex-start !important;
 }
 
 .shop,
@@ -191,7 +210,7 @@ const showConfirm = computed(() => ['draft', 'pending'].includes(order.value.sta
 .shop-header,
 .order-header,
 .items-header {
-    font-size: 28rpx;
+    font-size: 25rpx;
     margin-bottom: 20rpx;
     padding-left: 12rpx;
     position: relative;
@@ -203,11 +222,11 @@ const showConfirm = computed(() => ['draft', 'pending'].includes(order.value.sta
     content: '';
     display: block;
     width: 4rpx;
-    height: 28rpx;
+    height: 24rpx;
     background-color: #9b010e;
     position: absolute;
     left: 0;
-    top: 6rpx;
+    top: 5rpx;
 }
 
 .shop-content,
