@@ -63,6 +63,14 @@
 				"navigationBarBackgroundColor": "#f5f3f1",
 				"navigationBarTextStyle": "black"
 			}
+		},
+		{
+			"path": "pages/recycles/detail",
+			"style": {
+				"navigationBarTitleText": "订单详情",
+				"navigationBarBackgroundColor": "#f5f3f1",
+				"navigationBarTextStyle": "black"
+			}
 		}
 	],
 	"globalStyle": {

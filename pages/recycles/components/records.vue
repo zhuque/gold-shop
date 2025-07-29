@@ -27,7 +27,7 @@
                     </view>
                 </view>
                 <view class="records-footer">
-                    <view class="records-footer-button">查看详情</view>
+                    <view class="records-footer-button" @click="handleDetail(record)">查看详情</view>
                 </view>
             </view>
         </view>
@@ -125,6 +125,12 @@ function onAbort() {
 
 function onPulling() {
     // console.log('pulling');
+}
+
+function handleDetail(record) {
+    uni.navigateTo({
+        url: `/pages/recycles/detail?id=${record.id}`
+    })
 }
 </script>
 
