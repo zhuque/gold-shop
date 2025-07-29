@@ -43,4 +43,9 @@ export async function getSellOrderList() {
 	})
 }
 
-
+export async function getUserOrders() {
+	return request({
+		url: `server/recycles`,
+		method: 'GET'
+	})
+}

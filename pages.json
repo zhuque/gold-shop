@@ -47,6 +47,22 @@
 				"navigationBarBackgroundColor": "#f5f3f1",
 				"navigationBarTextStyle": "black"
 			}
+		}, 
+		{
+			"path": "pages/mine/index",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"navigationBarBackgroundColor": "#f5f3f1",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/recycles/index",
+			"style": {
+				"navigationBarTitleText": "回收订单",
+				"navigationBarBackgroundColor": "#f5f3f1",
+				"navigationBarTextStyle": "black"
+			}
 		}
 	],
 	"globalStyle": {
@@ -56,5 +72,23 @@
 		"backgroundColor": "#F8F8F8",
 		"navigationStyle": "default"
 	},
-	"uniIdRouter": {}
+	"uniIdRouter": {},
+	"tabBar": {
+		"color": "#707070",
+		"selectedColor": "#e1a62b",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "/static/imgs/tabs/home.png",
+				"selectedIconPath": "/static/imgs/tabs/home-active.png",
+			}, 
+			{
+				"pagePath": "pages/mine/index",
+				"text": "我的",
+				"iconPath": "/static/imgs/tabs/mine.png",
+				"selectedIconPath": "/static/imgs/tabs/mine-active.png"
+			}
+		]
+	}
 }

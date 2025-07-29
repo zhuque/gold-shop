@@ -14,6 +14,14 @@ export const userStore = defineStore('user', {
 		isAuth() {
 			return uni.getStorageSync("token") != null
 		},
+		userInfo() {
+			if (this.user) {
+				return this.user
+			} else {
+				this.updateUser()
+				return this.user
+			}
+		}
 	},
 	actions: {
 		async login(_code) {

@@ -26,7 +26,7 @@ onLoad(() => {
 const doGetPhoneNumber = async (e) => {
     const { data, code } = await getPhone(e.detail.code)
     if (code === 0) {
-        uni.navigateTo({
+        uni.switchTab({
             url: '/pages/index/index',
         })
     }
