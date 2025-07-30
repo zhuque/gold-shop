@@ -22,9 +22,10 @@
 			<view class="shop-item-header">
 				<view class="shop-item-header-title-box">
 					<view class="shop-item-header-title">
-						{{ shopInfo.shopName }}
+						{{ shopInfo?.name }}
 					</view>
-					<view class="shop-item-header-distance">距离您：{{ shopInfo.distance }}
+					<view class="shop-item-header-distance" v-show="shopInfo?.distance">距离您：{{ shopInfo?.distance ?? 0
+						}}km
 					</view>
 				</view>
 				<view class="shop-item-header-link">商家详情 ></view>
@@ -128,26 +129,23 @@
 					style="width: 100%; height: auto; color: #fff; margin: 30rpx 0;" />
 			</view>
 		</view>
-
 	</view>
-
-
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
 import { userStore } from '@/stores/user';
 import { priceStore } from '@/stores/price';
-import { getShopList } from '@/api/shop';
+import { useShopStore } from '@/stores/shop';
 import { onLoad, onPullDownRefresh } from '@dcloudio/uni-app';
 
 const user = userStore();
+const shopStore = useShopStore()
 const priceSt = priceStore()
 const price = computed(() => priceSt.price)
-const shopInfo = ref({
-	shopName: '周大福',
-	distance: '1.2km',
-})
+
+const shopInfo = computed(() => shopStore.nearestShop)
+
 const userLocation = ref({
 	latitude: 0,
 	longitude: 0,
@@ -159,25 +157,15 @@ const handleSell = async () => {
 	if (user.isAuth) {
 		if (!user.user) {
 			await user.updateUser()
-			if (!user.user.phone) {
-				uni.navigateTo({
-					url: '/pages/login/index',
-				})
-			} else {
-				uni.navigateTo({
-					url: '/pages/sell/index',
-				})
-			}
+		}
+		if (!user.user.phone) {
+			uni.navigateTo({
+				url: '/pages/login/index',
+			})
 		} else {
-			if (!user.user.phone) {
-				uni.navigateTo({
-					url: '/pages/login/index',
-				})
-			} else {
-				uni.navigateTo({
-					url: '/pages/sell/index',
-				})
-			}
+			uni.navigateTo({
+				url: '/pages/sell/index?shopId=' + shopInfo.value.id,
+			})
 		}
 	} else {
 		uni.login({
@@ -199,14 +187,11 @@ const handleSell = async () => {
 }
 
 const loadData = async () => {
-	const { data } = await getShopList()
-	shops.value = data.map(item => {
-		item.distance = calcDistance(userLocation.value.latitude, userLocation.value.longitude, item.latitude, item.longitude)
-		return item
-	})
+	await shopStore.loadShops()
+	shops.value = shopStore.shops
 }
 
-onLoad(() => {
+onLoad(async () => {
 	loadData()
 })
 
@@ -224,21 +209,13 @@ const getLocation = async () => {
 		type: 'wgs84',
 	})
 	userLocation.value = res
+	user.setGeo(res)
+	shopStore.calcDistance()
+	shops.value = shopStore.shops
 }
 
 getLocation()
 
-function calcDistance(lat1, lon1, lat2, lon2) {
-	const R = 6371; // 地球半径，单位为公里
-	const dLat = (lat2 - lat1) * Math.PI / 180;
-	const dLon = (lon2 - lon1) * Math.PI / 180;
-	const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-		Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-		Math.sin(dLon / 2) * Math.sin(dLon / 2);
-	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-	const distance = R * c; // 距离，单位为公里
-	return distance;
-}
 </script>
 
 <style scoped>

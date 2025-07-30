@@ -57,10 +57,6 @@
                     <view class="item-label">重量：</view>
                     <view class="item-value">{{ item.weight?.toFixed(2) }} 克</view>
                 </view>
-                <view class="item">
-                    <view class="item-label">总价：</view>
-                    <view class="item-value">{{ item.amount?.toFixed(2) }} 元</view>
-                </view>
             </template>
         </view>
 
@@ -164,11 +160,11 @@ async function onConfirm() {
     }
 }
 
-function onContact() {
+function onContact(e) {
     // uni.makePhoneCall({
     //     phoneNumber: '13800138000'
     // })
-    console.log('onContact')
+    console.log('onContact', e.detail)
 }
 
 onPullDownRefresh(async () => {

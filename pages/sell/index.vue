@@ -18,21 +18,21 @@
         <view class="card">
             <view class="card-header">
                 <view class="card-header-left">
-                    <span class="card-header-left-1">{{ shopInfo.name }}</span>
-                    <span class="card-header-left-2">距您{{ shopInfo.distance }}</span>
+                    <span class="card-header-left-1">{{ shopInfo?.name }}</span>
+                    <span class="card-header-left-2">距您{{ shopInfo?.distance ?? 0 }}km</span>
                 </view>
                 <view class="card-header-right">
                     门店详情
                 </view>
             </view>
             <view class="card-content shop-card"
-                :style="{ backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgb(255, 255, 255)), url(${shopInfo.thumb})` }">
+                :style="{ backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgb(255, 255, 255)), url(${shopInfo?.thumb})` }">
                 <view class="shop-card-content">
                     <view class="shop-card-content-item">
-                        营业时间：{{ shopInfo.startTime }} - {{ shopInfo.endTime }}
+                        营业时间：{{ shopInfo?.startTime }} - {{ shopInfo?.closeTime }}
                     </view>
                     <view class="shop-card-content-item">
-                        地址：{{ shopInfo.address }}
+                        地址：{{ shopInfo?.address }}
                     </view>
                 </view>
             </view>
@@ -110,9 +110,19 @@
 import { ref, computed } from 'vue';
 import { priceStore } from '@/stores/price';
 import { addSellOrder } from '@/api/user';
+import { onLoad } from '@dcloudio/uni-app';
+import { useShopStore } from '@/stores/shop';
 
+const shopStore = useShopStore()
 const priceSt = priceStore()
 const price = computed(() => priceSt.price)
+const shopId = ref(0)
+
+onLoad((options) => {
+    shopId.value = options.shopId
+    shopInfo.value = shopStore.shops.find(item => item.id == shopId.value)
+    console.log("shopInfo", shopInfo.value, shopStore.shops)
+})
 
 const shopInfo = ref({
     name: "店名",
@@ -121,8 +131,8 @@ const shopInfo = ref({
     address: "广东省深圳市宝安区宝体路1号",
     distance: "20km",
     thumb: "http://res.zocai.com/news/upload/1402081150497165.jpg",
-    startTime: "09:00",
-    endTime: "18:00",
+    startTime: "09:00-18:00",
+    closeTime: "18:00",
     status: "营业中",
 })
 
@@ -156,7 +166,7 @@ const submitOrder = async () => {
         return
     }
     try {
-        const { data, code } = await addSellOrder({
+        const { data, code, msg } = await addSellOrder({
             shopId: +shopInfo.value.id,
             items: orders.value.filter(item => item.weight > 0).map(item => ({
                 weight: +item.weight,
