@@ -44,7 +44,6 @@ import dayjs from 'dayjs';
 import { useRecycleStore } from '@/stores/recycle'
 
 const recycleStore = useRecycleStore();
-const statusLabels = recycleStore.getStatusLabels();
 
 const loading = ref(false);
 const page = ref(1);
@@ -81,7 +80,7 @@ async function loadMore() {
         }
         const newRecords = list.map(item => ({
             ...item,
-            statusLabel: statusLabels[item.status] || 'n/a',
+            statusLabel: recycleStore.getStatusLabel(item.status),
             createdAt: dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')
         }));
         page.value++;

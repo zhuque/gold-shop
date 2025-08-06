@@ -33,9 +33,7 @@ async function onClickItem(e) {
 }
 
 onLoad((options) => {
-    console.log('options', options)
     current.value = statusAll.findIndex(item => item.value === options.status)
-    console.log('current', current.value)
 })
 
 </script>

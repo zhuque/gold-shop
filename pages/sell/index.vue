@@ -120,8 +120,9 @@ const shopId = ref(0)
 
 onLoad((options) => {
     shopId.value = options.shopId
-    shopInfo.value = shopStore.shops.find(item => item.id == shopId.value)
-    console.log("shopInfo", shopInfo.value, shopStore.shops)
+    if (shopId.value) {
+        shopInfo.value = shopStore.shops.find(item => item.id == shopId.value)
+    }
 })
 
 const shopInfo = ref({
@@ -180,7 +181,7 @@ const submitOrder = async () => {
                 icon: 'error'
             })
             return
-        } 
+        }
 
         uni.navigateTo({
             url: "/pages/recycles/detail?id=" + data.id

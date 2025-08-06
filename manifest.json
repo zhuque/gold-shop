@@ -50,20 +50,20 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wx4a701ee7b0929b54",
         "setting" : {
             "urlCheck" : false
         },
         "usingComponents" : true,
-        "permission": {
-            "scope.userLocation": {
-                "desc": "你的位置信息将用于小程序位置接口的效果展示"
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "你的位置信息将用于小程序位置接口的效果展示"
             },
-            "scope.userFuzzyLocation": {
-                "desc": "你的位置信息将用于小程序位置接口的效果展示"
+            "scope.userFuzzyLocation" : {
+                "desc" : "你的位置信息将用于小程序位置接口的效果展示"
             }
         },
-        "requiredPrivateInfos": ["getLocation"]
+        "requiredPrivateInfos" : [ "getLocation" ]
     },
     "mp-alipay" : {
         "usingComponents" : true

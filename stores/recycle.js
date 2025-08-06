@@ -13,7 +13,10 @@ export const useRecycleStore = defineStore('recycle', {
     }),
     actions: {
         getStatusLabels() {
-            return this.statusLabels
+            return this.statusLabels 
+        },
+        getStatusLabel(status) {
+            return this.statusLabels[status] ?? '处理中'
         }
     }
 })
