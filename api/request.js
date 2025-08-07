@@ -25,6 +25,7 @@ export async function login(code) {
 uni.addInterceptor('request', {
 	invoke(args) {
 		args.url = baseUrl + args.url;
+		// console.log('args', args)
 		if (!args.header) {
 			args.header = {}
 		}
@@ -39,7 +40,9 @@ uni.addInterceptor('request', {
 		}
 	},
 	fail(err) {},
-	complete(res) {}
+	complete(res) {
+		// console.log('complete', res)
+	}
 })
 
 export async function checkToken() {
