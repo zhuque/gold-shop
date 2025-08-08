@@ -178,7 +178,7 @@ onPullDownRefresh(async () => {
 })
 
 const showCancel = computed(() => order.value.status === 'draft')
-const showConfirm = computed(() => ['draft', 'pending'].includes(order.value.status))
+const showConfirm = computed(() => ['', 'pending'].includes(order.value.status))
 </script>
 
 <style lang="scss" scoped>

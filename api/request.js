@@ -4,11 +4,14 @@ export async function request({ url, method, data }) {
 	if (res.statusCode == 200) {
 		return res.data
 	}
-	uni.showToast({
-		title: "网络错误",
-		duration: 2000,
-		icon: "none"
-	})
+	if (res.statusCode != 401) {
+		uni.showToast({
+			title: "网络错误",
+			duration: 2000,
+			icon: "none"
+		})
+	}
+	return res
 }
 
 export const baseUrl = process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8888/' : 'https://testapi.wxdou.com/';
@@ -39,7 +42,7 @@ uni.addInterceptor('request', {
 			})
 		}
 	},
-	fail(err) {},
+	fail(err) { },
 	complete(res) {
 		// console.log('complete', res)
 	}
