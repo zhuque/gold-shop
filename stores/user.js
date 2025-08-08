@@ -58,8 +58,8 @@ export const userStore = defineStore('user', {
 			this.geo = g
 		},
 		async updateUser() {
-			const { data } = await getUserInfo()
-			if (data) {
+			const { data, code } = await getUserInfo()
+			if (code === 0) {
 				this.user = data
 			}
 		},

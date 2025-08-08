@@ -37,9 +37,13 @@ uni.addInterceptor('request', {
 	success(args) {
 		const { data, statusCode } = args
 		if (statusCode == 401) {
-			uni.navigateTo({
-				url: '/pages/login/index'
-			})
+			const pages = getCurrentPages()
+			const currentPage = pages[pages.length - 1]
+			if (currentPage.route !== 'pages/login/index') {
+				uni.navigateTo({
+					url: '/pages/login/index'
+				})
+			}
 		}
 	},
 	fail(err) { },

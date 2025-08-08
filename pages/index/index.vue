@@ -155,7 +155,7 @@ const shops = ref([])
 
 const handleSell = async () => {
 	if (user.isAuth) {
-		if (!user.user) {
+		if (!user.user || !user.user.id) {
 			await user.updateUser()
 		}
 		if (!user.user.phone) {
