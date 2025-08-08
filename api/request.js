@@ -1,3 +1,4 @@
+import { userStore } from '@/stores/user';
 
 export async function request({ url, method, data }) {
 	const res = await uni.request({ url, method, data, dataType: "json" })
@@ -37,6 +38,9 @@ uni.addInterceptor('request', {
 	success(args) {
 		const { data, statusCode } = args
 		if (statusCode == 401) {
+			const user = userStore();
+			user.user = null
+			uni.removeStorageSync("token")
 			const pages = getCurrentPages()
 			const currentPage = pages[pages.length - 1]
 			if (currentPage.route !== 'pages/login/index') {

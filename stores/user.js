@@ -12,7 +12,7 @@ export const userStore = defineStore('user', {
 	},
 	getters: {
 		isAuth() {
-			return uni.getStorageSync("token") != null
+			return uni.getStorageSync("token") != null 
 		},
 		userInfo() {
 			if (this.user) {
@@ -58,9 +58,12 @@ export const userStore = defineStore('user', {
 			this.geo = g
 		},
 		async updateUser() {
-			const { data, code } = await getUserInfo()
-			if (code === 0) {
+			const res = await getUserInfo()
+			const { data, code } = res.data
+			if (code == 0) {
 				this.user = data
+			} else {
+				this.user = null
 			}
 		},
 		setUser(user) {

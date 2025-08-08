@@ -26,8 +26,15 @@ onLoad(() => {
 const doGetPhoneNumber = async (e) => {
     const { data, code } = await getPhone(e.detail.code)
     if (code === 0) {
-        uni.switchTab({
-            url: '/pages/index/index',
+        uni.showToast({
+            title: '登录成功',
+            icon: 'success',
+            duration: 2000,
+            success: () => {
+                uni.switchTab({
+                    url: '/pages/index/index',
+                })
+            }
         })
     }
 }

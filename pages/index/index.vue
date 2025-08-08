@@ -25,7 +25,7 @@
 						{{ shopInfo?.name }}
 					</view>
 					<view class="shop-item-header-distance" v-show="shopInfo?.distance">距离您：{{ shopInfo?.distance ?? 0
-						}}km
+					}}km
 					</view>
 				</view>
 				<view class="shop-item-header-link">商家详情 ></view>
@@ -155,18 +155,24 @@ const shops = ref([])
 
 const handleSell = async () => {
 	if (user.isAuth) {
+		const action = () => {
+			if (!user.user.phone) {
+				uni.navigateTo({
+					url: '/pages/login/index',
+				})
+			} else {
+				uni.navigateTo({
+					url: '/pages/sell/index?shopId=' + shopInfo.value.id,
+				})
+			}
+		}
 		if (!user.user || !user.user.id) {
 			await user.updateUser()
+			action()
+			return
 		}
-		if (!user.user.phone) {
-			uni.navigateTo({
-				url: '/pages/login/index',
-			})
-		} else {
-			uni.navigateTo({
-				url: '/pages/sell/index?shopId=' + shopInfo.value.id,
-			})
-		}
+		action()
+
 	} else {
 		uni.login({
 			provider: 'weixin',
