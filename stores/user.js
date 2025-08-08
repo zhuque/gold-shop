@@ -59,7 +59,7 @@ export const userStore = defineStore('user', {
 		},
 		async updateUser() {
 			const res = await getUserInfo()
-			const { data, code } = res.data
+			const { data, code } = res
 			if (code == 0) {
 				this.user = data
 			} else {
